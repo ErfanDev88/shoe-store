@@ -62,8 +62,21 @@ export const useCart = create<CartState>()(
         const guest = get().guest.filter((g) => g.sku !== sku);
         set({ guest, view: guestView(guest) });
       },
-      applyCoupon: async (code) => set({ view: await api<CartView>('/cart/coupon', { method: 'POST', json: { code } }) }),
-      removeCoupon: async () => set({ view: await api<CartView>('/cart/coupon', { method: 'DELETE' }) }),
+applyCoupon: async (code) => {
+  const view = await api<CartView>('/cart/coupon', {
+    method: 'POST',
+    json: { code }
+  });
+
+  set({ view });
+},      
+removeCoupon: async () => {
+  const view = await api<CartView>('/cart/coupon', {
+    method: 'DELETE'
+  });
+
+  set({ view });
+},
       mergeGuest: async () => {
         const { guest } = get();
         if (guest.length) {
